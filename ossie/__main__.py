@@ -169,7 +169,8 @@ def main(mode:str=None, args:dict=None):
 
 	elif mode == "Audit":
 		try:
-			return audit_request(creds, auth, env, args)
+			audit_request(creds, auth, env, args)
+			return 0
 		except Exception as e:
 			print("Failed to audit (%s): %s" % (env, str(e)))
 

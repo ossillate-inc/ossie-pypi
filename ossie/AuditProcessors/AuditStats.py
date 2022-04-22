@@ -74,9 +74,9 @@ class AuditStats:
 		with open("/tmp/issue_body.txt", 'w') as f:
 			issue = ''
 			for p in self._risky:
-				issue = issue+'\n'+p['name'] 
+				issue = issue+'\n' + f"{p['name']} (version {p['version']})"
 				for risk,reasons in p["risks"].items():
-					issue += ","+risk+"," 
+					issue += " is "+risk+" because " 
 					for r in reasons:
 						issue += r['details']
 			f.write(issue)
