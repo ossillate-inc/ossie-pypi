@@ -1,3 +1,4 @@
+import json
 class AuditStats:
 	def __init__(self, audit_data):
 		assert 'packages' in audit_data, "Unexpected error. Please report this bug"
@@ -67,10 +68,22 @@ class AuditStats:
 		print(out.strip('\n'))
 		return risky_count
 
+	def create_issue(self):
+		with open("/tmp/issue_title.txt", 'w') as f:
+			f.write("Risky/Malicious/Undesirable Dependencies found")
+		with open("/tmp/issue_body.txt", 'w') as f:
+			issue = ''
+			for p in self._risky:
+				issue = issue+'\n'+p['name'] 
+				for risk,reasons in p["risks"].items():
+					issue += ","+risk+"," 
+					for r in reasons:
+						issue += r['details']
+			f.write(issue)
+
 	def aggregate_stats(self):
 		for pkg in self.audit_data['packages']:
 			self._reported.append(pkg)
-
 			if 'risks' not in pkg or not pkg['risks']:
 				self._erroneous.append(pkg)
 				continue
@@ -85,3 +98,15 @@ class AuditStats:
 
 			for cat in pkg['risks']:
 				self._risky.append(pkg)
+		if len(self._risky) > 0:
+			with open("/tmp/issue_required.txt", 'w') as f:
+				f.write("YES")
+			self.create_issue()
+		else:
+			with open("/tmp/issue_required.txt", 'w') as f:
+				f.write("NO")
+			with open("/tmp/issue_title.txt", 'w') as f:
+				f.write("NA")
+			with open("/tmp/issue_body.txt", 'w') as f:
+				f.write("NA")
+

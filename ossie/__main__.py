@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
-
 import os
 import sys
+from pathlib import Path
+sys.path[0] = str(Path(sys.path[0]).parent)
 
 from .Options.options import Options
 from .Config.config import Config
