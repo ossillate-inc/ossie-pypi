@@ -44,7 +44,6 @@ class Options():
 		args = parser.parse_args(argv)
 
 		if args.cmd == "auth":
-
 			self.__mode = "Authenticate"
 			self.__args = {'force': args.force}
 
