@@ -78,7 +78,8 @@ class AuditStats:
 				for risk,reasons in p["risks"].items():
 					issue += " is "+risk+" because " 
 					for r in reasons:
-						issue += r['details']
+						issue += r['details']		
+			issue += f"\n{self.audit_data['url']}"
 			f.write(issue)
 
 	def aggregate_stats(self):
