@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
-
 import os
 import sys
+from pathlib import Path
+sys.path[0] = str(Path(sys.path[0]).parent)
 
 from .Options.options import Options
 from .Config.config import Config
@@ -168,7 +169,8 @@ def main(mode:str=None, args:dict=None):
 
 	elif mode == "Audit":
 		try:
-			return audit_request(creds, auth, env, args)
+			audit_request(creds, auth, env, args)
+			return 0
 		except Exception as e:
 			print("Failed to audit (%s): %s" % (env, str(e)))
 

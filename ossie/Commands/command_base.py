@@ -28,6 +28,7 @@ class CommandBase:
 			audit_data = self.pyAuditer.audit_data
 			report = AuditStats(audit_data)
 			return report.summary(len(self.__packages))
+			
 		except Exception as e:
 			print("Failed to generate audit report: %s" % (str(e)))
 
