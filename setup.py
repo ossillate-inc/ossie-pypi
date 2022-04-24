@@ -13,7 +13,7 @@ setup(
 	name = 'ossie',
 	packages=find_packages(),
 	package_data={'ossie': ['config.ini']},
-	version = '0.2',
+	version = '0.3',
 	license='MIT',
 	description = 'Ossie is a smart assistant that alerts developers of "risky" Python PyPi packages in their software supply chain',
     long_description=long_description,
