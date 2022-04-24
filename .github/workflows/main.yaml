@@ -24,7 +24,7 @@ jobs:
 
       # Runs a set of commands using the runners shell
       - name: Run Ossie-GHA
-        uses: ossillate-inc/Ossie-GHA@2afdafb
+        uses: ossillate-inc/Ossie-GHA@70043ef197cc24cd95fbd375d2abecc8665d35b8
         with:
             OSSIEBOT_ID: 'qDJBjNsPXljS5MlN2SCCssJgvxVZL4VKmf8ZTir7'
             REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
