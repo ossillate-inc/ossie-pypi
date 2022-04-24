@@ -1,5 +1,5 @@
 requests
-python-dateutil
+python_dateutil
 pyyaml
 requests
 configparser
