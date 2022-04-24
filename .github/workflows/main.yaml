@@ -26,5 +26,5 @@ jobs:
       - name: Run Ossie-GHA
         uses: ossillate-inc/Ossie-GHA@v1
         with:
-            OSSIEBOT_ID: ${{ secret.OSSIEBOT_ID }}
+            OSSIEBOT_ID: ${{ secrets.OSSIEBOT_ID }}
             REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
