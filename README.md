@@ -1,7 +1,8 @@
 # OSSIE <//>
 
-Ossie is a bot that alerts you of "risky" open-source packages/dependencies in your
-software supply chain.
+Ossie is a bot that alerts you of malicious and other "risky" open-source packages/dependencies
+in your software supply chain that exhibit suspicious code behavior or contain attributes that
+make them vulnerable to attacks.
 
 # Background
 
