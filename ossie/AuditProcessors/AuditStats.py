@@ -83,7 +83,7 @@ class AuditStats:
 							issue += " is "+risk+" because " 
 							for r in reasons:
 								issue += r['details']		
-					issue += f"\n{self.audit_data['url']}"
+					issue += f"\nFull report available at {self.audit_data['url']}"
 					f.write(issue)
 			else:
 				with open("/tmp/issue_required.txt", 'w') as f:

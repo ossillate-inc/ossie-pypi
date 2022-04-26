@@ -29,7 +29,7 @@ class CommandBase:
 			audit_data = self.pyAuditer.audit_data
 			report = AuditStats(audit_data)
 			if env == "CICD":
-				return report.create_issue(len(self.__packages))
+				return report.create_issue()
 			return report.summary(len(self.__packages))
 		except Exception as e:
 			print("Failed to generate audit report: %s" % (str(e)))
