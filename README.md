@@ -4,6 +4,9 @@ Ossie is a bot that alerts you of malicious and other "risky" open-source packag
 in your software supply chain that exhibit suspicious code behavior or contain attributes that
 make them vulnerable to attacks.
 
+# Usage
+You will have to create a FREE account at https://ossillate.com
+
 # Background
 
 Ossie has been developed by cybersecurity researchers at [Ossillate Inc.](https://ossillate.com)
