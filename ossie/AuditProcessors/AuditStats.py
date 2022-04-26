@@ -23,7 +23,6 @@ class AuditStats:
 
 	# count: number of scanned packages
 	def summary(self, requested_count:int):
-
 		out = ""
 		reported_count = len(self._reported)
 		if not requested_count or reported_count > requested_count:
@@ -65,22 +64,36 @@ class AuditStats:
 		if reported_count:
 			print("Unexpected error. Exiting!")
 			exit(1)
+		out += "Full report available at %s" % (self.audit_data['url'])
 		print(out.strip('\n'))
 		return risky_count
 
 	def create_issue(self):
-		with open("/tmp/issue_title.txt", 'w') as f:
-			f.write("Risky/Malicious/Undesirable Dependencies found")
-		with open("/tmp/issue_body.txt", 'w') as f:
-			issue = ''
-			for p in self._risky:
-				issue = issue+'\n' + f"{p['name']} (version {p['version']})"
-				for risk,reasons in p["risks"].items():
-					issue += " is "+risk+" because " 
-					for r in reasons:
-						issue += r['details']		
-			issue += f"\n{self.audit_data['url']}"
-			f.write(issue)
+		try:
+			if len(self._risky) > 0:
+				with open("/tmp/issue_required.txt", 'w') as f:
+					f.write("YES")
+				with open("/tmp/issue_title.txt", 'w') as f:
+					f.write("Risky/Malicious/Undesirable Dependencies found")
+				with open("/tmp/issue_body.txt", 'w') as f:
+					issue = ''
+					for p in self._risky:
+						issue = issue+'\n' + f"{p['name']} (version {p['version']})"
+						for risk,reasons in p["risks"].items():
+							issue += " is "+risk+" because " 
+							for r in reasons:
+								issue += r['details']		
+					issue += f"\n{self.audit_data['url']}"
+					f.write(issue)
+			else:
+				with open("/tmp/issue_required.txt", 'w') as f:
+					f.write("NO")
+				with open("/tmp/issue_title.txt", 'w') as f:
+					f.write("NA")
+				with open("/tmp/issue_body.txt", 'w') as f:
+					f.write("NA")
+		except:
+			pass
 
 	def aggregate_stats(self):
 		for pkg in self.audit_data['packages']:
@@ -99,15 +112,3 @@ class AuditStats:
 
 			for cat in pkg['risks']:
 				self._risky.append(pkg)
-		if len(self._risky) > 0:
-			with open("/tmp/issue_required.txt", 'w') as f:
-				f.write("YES")
-			self.create_issue()
-		else:
-			with open("/tmp/issue_required.txt", 'w') as f:
-				f.write("NO")
-			with open("/tmp/issue_title.txt", 'w') as f:
-				f.write("NA")
-			with open("/tmp/issue_body.txt", 'w') as f:
-				f.write("NA")
-

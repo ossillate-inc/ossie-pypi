@@ -30,6 +30,7 @@ class Options():
 		audit_group.add_argument('--all', help='Audit all installed packages and dependencies.', action='store_true')
 		audit_group.add_argument('--project', help='Audit all deps of a project.', action='store')
 		audit_group.add_argument('--package', help='Audit a package, including all deps (e.g., dateutils==0.6.12).', action='store')
+		audit_group.add_argument('--deps', help='Audit all deps specified in a file (e.g., requirements.txt).', action='store')
 
 		# Authenticate sub-command
 		auth_parser = subparsers.add_parser('auth', help='Authenticate user with the server.')
@@ -53,7 +54,8 @@ class Options():
 				'id'		: args.id,
 				'all'		: args.all,
 				'project'	: args.project,
-				'package'	: args.package
+				'package'	: args.package,
+				'deps'		: args.deps,
 			}
 
 		elif args.cmd == "monitor":

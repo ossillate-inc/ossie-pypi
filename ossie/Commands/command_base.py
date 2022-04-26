@@ -12,23 +12,25 @@ import re
 import socket
 
 class CommandBase:
-	def __init__(self, cmd, name, auth, creds):
+	def __init__(self, cmd, name, auth, creds, env):
 		self.req_type = cmd
 		self.req_name = name
 		self.creds = creds
 		self.auth = auth
+		self.env = env
 		self.__packages = None
 
 	@abstractmethod
 	def get_packages(self):
 		pass
 
-	def summarize_audit_response(self):
+	def summarize_audit_response(self, env):
 		try:
 			audit_data = self.pyAuditer.audit_data
 			report = AuditStats(audit_data)
+			if env == "CICD":
+				return report.create_issue(len(self.__packages))
 			return report.summary(len(self.__packages))
-			
 		except Exception as e:
 			print("Failed to generate audit report: %s" % (str(e)))
 
@@ -64,13 +66,12 @@ class CommandBase:
 		finally:
 			return packages
 
-	def get_packages_from_tmp_file(self):
-		tmpfile = "/tmp/audit_req.txt"
+	def get_packages_from_file(self, filepath):
 		packages=[]
 		try:
-			with open(tmpfile) as f:
+			with open(filepath) as f:
 				while True:
-					line = f.readline()
+					line = f.readline().strip()
 					pkg = self.__parse_string_for_pkg_info(line)
 					if not pkg:
 						break
@@ -86,4 +87,4 @@ class CommandBase:
 		self.__packages = self.get_packages()
 		self.pyAuditer = PythonAuditRequester(self.__packages, self.creds.creds_filepath(), self.auth, self.creds)
 		self.pyAuditer.perform_audit(self.req_type, self.req_name)
-		return self.summarize_audit_response()
+		return self.summarize_audit_response(self.env)

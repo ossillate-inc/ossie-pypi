@@ -10,7 +10,7 @@ from .command_base import CommandBase
 import subprocess
 
 class CheckProject(CommandBase):
-	def __init__(self, path, auth, creds):
+	def __init__(self, path, auth, creds, env):
 		if not os.path.exists(path):
 			print("%s does not exist. Exiting." % (path))
 			exit(1)
@@ -22,7 +22,7 @@ class CheckProject(CommandBase):
 		self.project_path = path
 		print("[+] Auditing Project @ ", self.project_path)
 		name = os.path.basename(self.project_path)
-		super().__init__("project", name, auth, creds)
+		super().__init__("project", name, auth, creds, env)
 
 	def get_packages(self):
 		try:

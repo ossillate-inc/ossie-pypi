@@ -15,6 +15,7 @@ from .Authentication.auth import Auth
 from .Commands.command_check_all import CheckAll
 from .Commands.command_check_project import CheckProject
 from .Commands.command_check_package import CheckPackage
+from .Commands.command_check_deps import CheckDeps
 
 from .Utils.utils import parse_url
 from .Monitor.monitor import *
@@ -51,16 +52,20 @@ def audit_request(creds, auth, env, args):
 			raise Exception('could not authenticate user!')
 
 	if args['all']:
-		site_package_checker = CheckAll(auth=auth, creds=creds)
+		site_package_checker = CheckAll(auth=auth, creds=creds, env=env)
 		return site_package_checker.run()
 
 	elif args['package']:
-		package_checker = CheckPackage(args['package'], auth=auth, creds=creds)
+		package_checker = CheckPackage(args['package'], auth=auth, creds=creds, env=env)
 		return package_checker.run()
 
 	elif args['project']:
-		project_checker = CheckProject(args['project'], auth=auth, creds=creds)
+		project_checker = CheckProject(args['project'], auth=auth, creds=creds, env=env)
 		return project_checker.run()
+
+	elif args['deps']:
+		deps_checker = CheckDeps(args['deps'], auth=auth, creds=creds, env=env)
+		return deps_checker.run()
 
 def cleanup(env, auth, creds):
 	if env == "CICD":
