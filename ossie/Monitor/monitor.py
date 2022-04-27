@@ -13,31 +13,34 @@ def find_executable(exg):
 	except:
 		return None
 
-def get_ossie_pip_alias():
+def get_ossie_pip_alias(pip='pip'):
 	"""Return the alias for ossie-pip.
 	If pyenv is being used, return an alias to the current python installation's ossie-pip."""
-	ossie_pip_alias = 'alias pip="ossie-pip"'
+	ossie_pip_alias = 'alias %s="ossie-pip"' % (pip)
 	if find_executable('pyenv'):
 		pyenv_version = os.popen('pyenv version').read().split('(')[0].strip()
-		ossie_pip_alias = 'alias pip="~/.pyenv/versions/' + pyenv_version + '/bin/ossie-pip"'
+		ossie_pip_alias = 'alias %s="~/.pyenv/versions/' + pyenv_version + '/bin/ossie-pip"' % (pip)
 	return ossie_pip_alias
 
 def install_alias(file_path, alias):
 	"""Install the given alias to the given file.
 	Add a comment above the alias so that users know what it's for."""
-	with open(file_path, 'r') as read_f:
-		contents = read_f.read()
-		if alias in contents:
-			return False
-		out = open(file_path, 'a')
-		out.write('\n')
-		msg = '# Ossillate: pip alias to source the ossie-pip script'
-		out.write(msg)
-		out.write('\n')
-		out.write(alias)
-		out.write('\n')
-		out.close()
-		return True
+	try:
+		with open(file_path, 'r') as read_f:
+			contents = read_f.read()
+			if alias in contents:
+				return False
+			out = open(file_path, 'a')
+			out.write('\n')
+			msg = '# Ossillate: pip alias to source the ossie-pip script'
+			out.write(msg)
+			out.write('\n')
+			out.write(alias)
+			out.write('\n')
+			out.close()
+			return True
+	except:
+		return False
 
 def uninstall_alias(file_path, alias):
 	"""Uninstall the given alias from the given file."""
@@ -100,11 +103,16 @@ def deactivate_pip_wrapper():
 
 		# remove pip alias
 		ossie_pip_alias = get_ossie_pip_alias()
-		uninstall_alias(bash_file, ossie_pip_alias)
+		if ossie_pip_alias:
+			uninstall_alias(bash_file, ossie_pip_alias)
+
+		ossie_pip_alias = get_ossie_pip_alias(pip='pip3')
+		if ossie_pip_alias:
+			uninstall_alias(bash_file, ossie_pip_alias)
 
 		# alert user
-		print("<//> OssieBOT: to stop monitoring source %s file and  set alias:" % (bash_file))
-		print("source %s; alias pip=\"pip\"" % (bash_file))
+		print("<//> OssieBOT: to stop monitoring source %s file and set unalias:" % (bash_file))
+		print("source %s; unalias pip; unalias pip3" % (bash_file))
 	except Exception as e:
 		print("Failed to remove pip alias: %s. Installations will CONTINUE to be monitored!" % (str(e)))
 
@@ -118,7 +126,10 @@ def activate_pip_wrapper():
 
 		# install for bash
 		ossie_pip_alias = get_ossie_pip_alias()
-		if install_alias(bash_file, ossie_pip_alias):
+		if ossie_pip_alias and install_alias(bash_file, ossie_pip_alias):
+			ossie_pip_alias = get_ossie_pip_alias(pip='pip3')
+			if ossie_pip_alias:
+				install_alias(bash_file, ossie_pip_alias)
 			# alert user
 			print("<//> OssieBOT: to start monitoring source %s file:" % (bash_file))
 			print("source %s" % (bash_file))
