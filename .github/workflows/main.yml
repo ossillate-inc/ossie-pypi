@@ -24,7 +24,7 @@ jobs:
 
       # Runs a set of commands using the runners shell
       - name: Run Packj.dev audit
-        uses: ossillate-inc/packj.dev@v0.0.1-beta
+        uses: ossillate-inc/packj.dev@main
         with:
             OSSIEBOT_ID: ${{ secrets.OSSIEBOT_ID }}
             REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
