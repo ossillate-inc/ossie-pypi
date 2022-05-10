@@ -76,6 +76,7 @@ class AuditStats:
 				with open("/tmp/issue_title.txt", 'w') as f:
 					f.write("Risky/Malicious/Undesirable Dependencies found")
 				with open("/tmp/issue_body.txt", 'w') as f:
+					f.write(f"Analyzed {len(self.audit_data['packages'])} packages")
 					issue = ''
 					for p in self._risky:
 						issue = issue+'\n' + f"{p['name']} (version {p['version']})"
