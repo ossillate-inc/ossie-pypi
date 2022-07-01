@@ -2,7 +2,7 @@ import json
 class AuditStats:
 	def __init__(self, audit_data):
 		assert 'packages' in audit_data, "Unexpected error. Please report this bug"
-		assert isinstance(audit_data['packages'], list), "Unexpected error. Please report this bug"
+		assert type(audit_data['packages']) == list, "Unexpected error. Please report this bug"
 		self.audit_data = audit_data
 		self._reported = []
 		self._erroneous = []
@@ -64,7 +64,8 @@ class AuditStats:
 		if reported_count:
 			print("Unexpected error. Exiting!")
 			exit(1)
-		out += "Full report available at %s" % (self.audit_data['url'])
+		if 'url' in self.audit_data:
+			out += "Full report available at %s" % (self.audit_data['url'])
 		print(out.strip('\n'))
 		return risky_count
 
